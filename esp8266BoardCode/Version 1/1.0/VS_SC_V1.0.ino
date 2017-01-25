@@ -18,13 +18,7 @@
 Ticker sleepTicker;
 
 
-// THIS IS WHERE THINGS NEED TO BE DEFINED
-//***************************************************************
-#define topic1 "esp_temp_test2"
-#define mqtt_client_name "201" //dont change
-//set the temp wire input here
-#define MAX_LOOP_TIME_MS     15000
-  
+
 
 
 /*
@@ -47,9 +41,13 @@ Ticker sleepTicker;
 
 
 
-
-
-
+// THIS IS WHERE THINGS NEED TO BE DEFINED
+//***************************************************************
+#define topic1 "esp_temp_test2"
+#define mqtt_client_name "201" //dont change
+//set the temp wire input here
+#define MAX_LOOP_TIME_MS     15000
+  
 
 ///the following pins work on the ESP8266 ESP-12 to read the temperature
 //  14
@@ -57,6 +55,7 @@ Ticker sleepTicker;
 // 13 
 //PLEASE NOTE THAT THE PINS THAT DON'T WORK BELOW MAY BE DUE TO A WIRING FLAW ... but i doubt it :)
 // 12 DOES NOT WORK
+//note one of these pins will need to be used for the 3rd lead of the LED
 
  #define ONE_WIRE_BUS 13
 OneWire oneWire(ONE_WIRE_BUS);
@@ -67,9 +66,14 @@ int deviceID = 201;
 
 
 
+//DEFINE THESE
+/*
 int redPin = 5;
 int greenPin = 4;
 int bluePin = 14;
+*/
+
+
 
 int greenArr[]= {0,255,0};
 int redArr[] = {0,255,0};
@@ -81,10 +85,10 @@ int blackArr[] = {0,0,0};
 
 char current_temp[32];
 //this is in seconds
-
 int sleepTimeS = 30;
 //sleeptimeS_AP is for when the device doesn't connect to the network
 int sleepTimeS_AP = 60;
+//how long it takes for the wifi to drop
 int wifi_timeout = 90;
 
 unsigned long startTime;
