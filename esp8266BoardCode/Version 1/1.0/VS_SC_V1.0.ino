@@ -83,12 +83,15 @@ int redPin = 5;
 int greenPin = 4;
 int bluePin = 14;
 
-int greenArr[]= {0,255,0};
-int redArr[] = {0,255,0};
+int redArr[]= {0,255,0};
+int greenArr[] = {255,0,0};
 int blueArr[]= {0,0,255};
+
+
 int yellowArr[] = {255, 255, 0};
-int orangeArr[] = {200, 60, 0};
-int whiteArr[] = {255, 255, 255};
+int orangeArr[] = {40, 255, 0};
+//int orangeArr[] = {128, 255, 0};
+int whiteArr[] = {255, 128, 0};
 int blackArr[] = {0,0,0};
 
 char current_temp[32];
@@ -175,14 +178,16 @@ void reconnect() {
             Serial.print("failed, rc=");
             Serial.print(client.state());
             
-             blink_lights(redArr,blackArr,2,75); 
+             blink_lights(blueArr,blackArr,8,75); 
+                ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT); 
+
             Serial.println(" try again in 5 seconds");
             // Wait 5 seconds before retrying
             delay(5000);
         }
     }
 }
-
+  
 
 void sleepyTime() {
   const int elapsed = millis() - startTime;
@@ -192,7 +197,9 @@ void sleepyTime() {
   if (elapsed >= MAX_LOOP_TIME_MS) {
   
     setColor(redArr);
-   ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT);  }
+    delay(2000);
+   ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT); 
+   }
   // It can take a while for the ESP to actually go to sleep.
   // When   it wakes up we start again in setup().
   delay(5000);
@@ -209,7 +216,7 @@ void setup() {
 
   //SET THIS TO ORANGE IN PRODUCTION
   
-  setColor(redArr);
+  setColor(orangeArr);
 
   WiFiManager wifiManager;
 
@@ -229,7 +236,7 @@ void setup() {
 
 
   
-  wifiManager.resetSettings();
+  //wifiManager.resetSettings();
 
 
 
@@ -242,17 +249,18 @@ void setup() {
   //here  "AutoConnectAP" with password "password"
   //and goes into a blocking loop awaiting configuration
   //if (!wifiManager.autoConnect("AutoConnectAP1234")) {
-    if (!wifiManager.autoConnect("test")) {
+    if (!wifiManager.autoConnect("Device201")) {
 
 
-    // blink_lights(redArr,blackArr,6,125);
+    blink_lights(redArr,blackArr,8,75);
     Serial.println("failed to connect, we should reset as see if it connects");
-    setColor(redArr);
+    //setColor(redArr);
     delay(1000);
+    ESP.reset();
       ESP.deepSleep(sleepTimeS_AP * 1000000,WAKE_RF_DEFAULT);
     delay(500);
   }
-    wifiManager.autoConnect("test");
+    wifiManager.autoConnect("Device201");
     //wifiManager.autoConnect("AutoConnectAP1234");
   //if you get here you have connected to the WiFi
   Serial.println("connected...yeey :)");
@@ -330,6 +338,6 @@ void loop() {
    ESP.deepSleep(sleepTimeS * 1000000,WAKE_RF_DEFAULT);
    delay(100);  
    Serial.println("this should not print");
-    delay(10000);
+    delay(4000);
   
 }
