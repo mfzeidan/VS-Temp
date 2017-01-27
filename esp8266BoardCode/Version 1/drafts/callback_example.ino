@@ -20,6 +20,13 @@ void setup() {
   //WiFiManager
   //Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
+  
+  
+  
+  WiFiManagerParameter custom_text("<p>Welcome to VoltSync</p>");
+  wifiManager.addParameter(&custom_text);
+  
+  
   //reset settings - for testing
   //wifiManager.resetSettings();
 
