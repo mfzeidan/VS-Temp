@@ -25,6 +25,10 @@ void setup() {
   
   WiFiManagerParameter custom_text("<p>Welcome to VoltSync</p>");
   wifiManager.addParameter(&custom_text);
+    WiFiManagerParameter custom_text("<p>Welcome to VoltSync2</p>");
+  wifiManager.addParameter(&custom_text);
+    WiFiManagerParameter custom_text("<h1>Welcome to VoltSync3</h1>");
+  wifiManager.addParameter(&custom_text);
   
   
   //reset settings - for testing
