@@ -304,8 +304,6 @@ void loop() {
 
       }
                   
-
-      
       if (!client.connected()) {
         reconnect();
         }
@@ -318,10 +316,6 @@ void loop() {
       temperature = "-1000";
     }
     
-    if (temperature == "185"){
-      temperature = "0";
-    }
-
   
     String message_to_send1 = String("{\"devID\":") +  
     String(deviceID) + 
