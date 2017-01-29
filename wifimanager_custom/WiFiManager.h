@@ -34,7 +34,7 @@ const char HTTP_FORM_START[] PROGMEM      = "   <form method='get' action='wifis
 const char HTTP_FORM_END[] PROGMEM        = "   <br/><button type='submit' onclick='loading();'>Connect</button></form>";
 const char HTTP_FORM_PARAM[] PROGMEM      = "   <br/><input id='{i}' name='{n}' length={l} placeholder='{p}' value='{v}' {c}>";
 const char HTTP_SCAN_LINK[] PROGMEM       = "   <br/><div class=\"c\"><a href=\"/wifi\" onclick='loading();'>Rescan Networks</a></div>";
-const char HTTP_SAVED[] PROGMEM           = "   <div><center><b>Attempting a Connection</b><br/><br/>Your LED should signify if you are succesfully connected.<br /><br /> If the device does not connect, turn the device off then back on and try connecting again.<br /><br /><br /> Please connect back to your original WiFi, then finish your device setup at   <a href='http://www.voltsync.tech'>VoltSync.tech</a><br /><br />Thanks for being a beta tester :) !<br /></center></div>";
+const char HTTP_SAVED[] PROGMEM           = "   <div><center><b>Attempting a Connection</b><br/><br/>Your LED should signify if you are succesfully connected.<br /><br /> If the device does not connect, turn the device off then back on and try connecting again.<br /><br /> Please connect back to your original WiFi, then finish your device setup at   <a href='http://www.voltsync.tech'>VoltSync.tech</a><br /><br />Thanks for being a beta tester :) !<br /></center></div>";
 const char HTTP_END[] PROGMEM             = "   </div></body></html>";
 #define WIFI_MANAGER_MAX_PARAMS 10
 
