@@ -360,7 +360,9 @@ void WiFiManager::handleRoot() {
   page.replace("{v}", "Options");
   page += FPSTR(HTTP_SCRIPT);
   page += FPSTR(HTTP_STYLE);
+  page += "<h1>";
   page += FPSTR(HTTP_HEADIMAGE);
+  page += "</h1>";
   page += _customHeadElement;
   page += FPSTR(HTTP_HEAD_END);
   page += "<h1>";
@@ -390,7 +392,9 @@ void WiFiManager::handleWifi(boolean scan) {
       DEBUG_WM(F("No networks found"));
       page += F("No networks found. Refresh to scan again.");
     } else {
-
+      page += F("Please click your WiFi network below.");
+	 page += "<br/>";
+		page += "<br/>";
       //sort networks
       int indices[n];
       for (int i = 0; i < n; i++) {
