@@ -587,7 +587,7 @@ void WiFiManager::handleWifiSave() {
   page += "</b> as your device. You'll need this finish your setup :) </center> ";
   page += FPSTR(HTTP_END);
 
-  server->send(200, "text/html", page);
+  server->send(200, "text/html", page);
 
   DEBUG_WM(F("Sent wifi save page"));
 
