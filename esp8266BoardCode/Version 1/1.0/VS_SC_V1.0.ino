@@ -1,3 +1,5 @@
+
+
 #include <FS.h>                   //this needs to be first, or it all crashes and burns...
 #include <ESP8266WiFi.h>          //https://github.com/esp8266/Arduino
 //needed for library
@@ -9,8 +11,8 @@
 #include <DallasTemperature.h>
 #include <Ticker.h>
 
-//#define mqtt_server "104.236.210.175" //fill this
-#define mqtt_server "159.203.102.9" //fill this
+#define mqtt_server "104.236.210.175" //fill this
+//#define mqtt_server "159.203.102.9" //fill this
 #define mqtt_user "" // no fill necessary
 #define mqtt_password "" // no fill necessary
 //#define topic1 "temp/temp1"
@@ -21,14 +23,13 @@ Ticker sleepTicker;
 // THIS IS WHERE THINGS NEED TO BE DEFINED
 //***************************************************************
 #define topic1 "esp_temp_test2"
-#define mqtt_client_name "201" //dont change
+#define mqtt_client_name "1201" //dont change
 //set the temp wire input here
 #define MAX_LOOP_TIME_MS     15000
   
 
 
 /*
- * 
  * FEATURES FOR THIS SCRIPT
  * 
  * -added a wifi timeout so users have 90 seconds to connect before it resets
@@ -56,12 +57,6 @@ Ticker sleepTicker;
 
  
 
-
-
-
-
-
-
 ///the following pins work on the ESP8266 ESP-12 to read the temperature
 //  14
 // pin 2 works but wouldn't suggest it due to it being on the same side as ground, not vcc which needs a pullup resistor 
@@ -69,37 +64,51 @@ Ticker sleepTicker;
 //PLEASE NOTE THAT THE PINS THAT DON'T WORK BELOW MAY BE DUE TO A WIRING FLAW ... but i doubt it :)
 // 12 DOES NOT WORK
 
- #define ONE_WIRE_BUS 13
+ #define ONE_WIRE_BUS 14
 OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 WiFiClient espClient;
 PubSubClient client(espClient);
-int deviceID = 201;
+int deviceID = 1201;
 String WiFiDevID = "test";
 
 
 
 int redPin = 5;
 int greenPin = 4;
-int bluePin = 14;
+// not using bluePin
+int bluePin = 13;
 
-int redArr[]= {0,255,0};
-int greenArr[] = {255,0,0};
-int blueArr[]= {0,0,255};
+/// layout for testing board
+//int redArr[]= {0,255,0};
+//int greenArr[] = {255,0,0};
+//int blueArr[]= {0,0,255};
 
 
-int yellowArr[] = {255, 255, 0};
-int orangeArr[] = {40, 255, 0};
+//int yellowArr[] = {255, 255, 0};
+//int orangeArr[] = {40, 255, 0};
 //int orangeArr[] = {128, 255, 0};
+//int whiteArr[] = {255, 128, 0};
+//int blackArr[] = {0,0,0};
+
+
+int redArr[]= {255,0,0};
+int greenArr[] = {0,255,0};
+int blueArr[]= {0,0,255};
+int yellowArr[] = {255, 255, 0};
+//int orangeArr[] = {255, 40, 0};
+int orangeArr[] = {255, 0, 0};
 int whiteArr[] = {255, 128, 0};
 int blackArr[] = {0,0,0};
+
+
 
 char current_temp[32];
 //this is in seconds
 
 int sleepTimeS = 30;
 //sleeptimeS_AP is for when the device doesn't connect to the network
-int sleepTimeS_AP = 60;
+int sleepTimeS_AP = 30;
 int wifi_timeout = 90;
 
 unsigned long startTime;
@@ -163,7 +172,7 @@ void pubMQTT(String topic,String topic_val){
     Serial.print("Newest topic " + topic + " value:");
     Serial.println(String(topic_val).c_str());
     client.publish(topic.c_str(), String(topic_val).c_str(), true);
-    blink_lights(greenArr,blackArr,2,75);
+    blink_lights(yellowArr,blackArr,6,100);
 }
 
 void reconnect() {
@@ -173,17 +182,17 @@ void reconnect() {
         // Attempt to connect
         if (client.connect(mqtt_client_name)) { //* See //NOTE below
             Serial.println("connected");
-            blink_lights(greenArr,blackArr,2,75);
+            blink_lights(greenArr,blackArr,3,100);
         } else {
             Serial.print("failed, rc=");
             Serial.print(client.state());
             
-             blink_lights(blueArr,blackArr,8,75); 
-                ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT); 
+              blink_lights(redArr,blackArr,4,50);
+                //ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT); 
 
             Serial.println(" try again in 5 seconds");
             // Wait 5 seconds before retrying
-            delay(5000);
+            delay(1000);
         }
     }
 }
@@ -197,7 +206,7 @@ void sleepyTime() {
   if (elapsed >= MAX_LOOP_TIME_MS) {
   
     setColor(redArr);
-    delay(2000);
+    delay(2500);
    ESP.deepSleep(sleepTimeS * 10000000,WAKE_RF_DEFAULT); 
    }
   // It can take a while for the ESP to actually go to sleep.
@@ -216,7 +225,7 @@ void setup() {
 
   //SET THIS TO ORANGE IN PRODUCTION
   
-  setColor(orangeArr);
+  setColor(greenArr);
 
   WiFiManager wifiManager;
 
@@ -236,7 +245,7 @@ void setup() {
 
 
   
-  //wifiManager.resetSettings();
+ //wifiManager.resetSettings();
 
 
 
@@ -249,26 +258,26 @@ void setup() {
   //here  "AutoConnectAP" with password "password"
   //and goes into a blocking loop awaiting configuration
   //if (!wifiManager.autoConnect("AutoConnectAP1234")) {
-    if (!wifiManager.autoConnect("Device201")) {
+    if (!wifiManager.autoConnect("Device1201")) {
 
 
-    blink_lights(redArr,blackArr,8,75);
     Serial.println("failed to connect, we should reset as see if it connects");
-    //setColor(redArr);
+    blink_lights(redArr,blackArr,6,50);
     delay(1000);
-    ESP.reset();
-      ESP.deepSleep(sleepTimeS_AP * 1000000,WAKE_RF_DEFAULT);
+    setColor(greenArr);
+    //ESP.reset();
+      //ESP.deepSleep(sleepTimeS_AP * 1000000,WAKE_RF_DEFAULT);
     delay(500);
   }
-    wifiManager.autoConnect("Device201");
+    wifiManager.autoConnect("1Device201");
     //wifiManager.autoConnect("AutoConnectAP1234");
   //if you get here you have connected to the WiFi
   Serial.println("connected...yeey :)");
-  //blink_lights(green_pin,6,200);
+    blink_lights(greenArr,blackArr,4,50);
 
 //CONNECT TO WIFI GO GREEN
   
-    blink_lights(greenArr,blackArr,3,50);
+    //blink_lights(greenArr,blackArr,3,50);
     delay(200);
    // blink_lights(yellowArr,orangeArr,6,50);
     //blink_lights(whiteArr,blackArr,6,50);
@@ -296,13 +305,16 @@ void loop() {
 
        // on the first reading it spits out 185 degrees if it measures something, not sure why but just make it rerequest a value
 
-      while(temp_float > 184.5 && temp_float < 185.5){
-        Serial.println("temp not set yet");
+     while(temp_float > 184.5 && temp_float < 185.5){
+        //blink_lights(greenArr,redArr,4,50);\
+       
+       //Serial.println("temp not set yet");
         sensors.requestTemperatures(); // Send the command to get temperatures
       temp_float = sensors.getTempFByIndex(0);
       Serial.println(temp_float);
 
       }
+      
                   
       if (!client.connected()) {
         reconnect();
@@ -335,3 +347,5 @@ void loop() {
     delay(4000);
   
 }
+
+
